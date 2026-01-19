@@ -1,0 +1,4 @@
+# REPLACE WITH YOUR OWN SUPABASE PROJECT ID
+# This file is for local Supabase CLI configuration only
+# Get your project ID from your Supabase project dashboard
+project_id = "YOUR_PROJECT_ID_HERE"

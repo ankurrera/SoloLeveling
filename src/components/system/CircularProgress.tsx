@@ -52,7 +52,7 @@ export const CircularProgress = ({
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-lg font-bold text-foreground">{value}</span>
         {label && (
-          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{label}</span>
+          <span className="text-[9px] text-muted-foreground uppercase tracking-[0.15em]">{label}</span>
         )}
       </div>
     </div>

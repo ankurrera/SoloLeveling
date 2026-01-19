@@ -1,14 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
+import { useStats } from "@/hooks/useStats";
 
-interface RadarChartProps {
-  data: {
-    label: string;
-    value: number;
-  }[];
-}
-
-const RadarChart = ({ data }: RadarChartProps) => {
+const RadarChart = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { stats, isLoading } = useStats();
+
+  // Build data array from stats - memoized to prevent unnecessary re-renders
+  const data = useMemo(() => {
+    if (!stats) {
+      return [
+        { label: "STR", value: 30 },
+        { label: "END", value: 25 },
+        { label: "MOB", value: 30 },
+        { label: "REC", value: 50 },
+        { label: "CON", value: 0 },
+      ];
+    }
+    
+    return [
+      { label: "STR", value: stats.strength },
+      { label: "END", value: stats.endurance },
+      { label: "MOB", value: stats.mobility },
+      { label: "REC", value: stats.recovery },
+      { label: "CON", value: stats.consistency },
+    ];
+  }, [stats]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -125,29 +141,35 @@ const RadarChart = ({ data }: RadarChartProps) => {
   return (
     <div className="system-panel p-4 hover-glow animate-fade-in-up animation-delay-100">
       <div className="text-center mb-2">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider">1</span>
-        <h3 className="text-sm font-gothic text-primary">Coins</h3>
+        <span className="text-xs text-muted-foreground uppercase tracking-[0.15em]">Core Metrics</span>
+        <h3 className="text-sm font-gothic text-primary uppercase tracking-wider">Physical Balance</h3>
       </div>
       
-      <div className="relative flex items-center justify-center">
-        <canvas
-          ref={canvasRef}
-          width={280}
-          height={280}
-          className="w-full max-w-[280px]"
-        />
-        
-        {/* Center decoration */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-3 h-3 rounded-full bg-primary/30 animate-pulse-glow" />
+      {isLoading ? (
+        <div className="flex items-center justify-center h-[280px]">
+          <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
         </div>
-      </div>
+      ) : (
+        <div className="relative flex items-center justify-center">
+          <canvas
+            ref={canvasRef}
+            width={280}
+            height={280}
+            className="w-full max-w-[280px]"
+          />
+          
+          {/* Center decoration */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-3 h-3 rounded-full bg-primary/30 animate-pulse-glow" />
+          </div>
+        </div>
+      )}
 
-      {/* Creativity Sample */}
+      {/* Health Bar */}
       <div className="mt-4 text-center border-t border-border/30 pt-3">
-        <div className="text-xs text-muted-foreground uppercase tracking-wider">Creativity Sample</div>
+        <div className="text-xs text-muted-foreground uppercase tracking-[0.15em]">System Balance</div>
         <div className="text-xl font-bold text-foreground mt-1">
-          450<span className="text-muted-foreground">/600</span>
+          {stats?.health || 35}<span className="text-muted-foreground">/100</span>
         </div>
       </div>
     </div>

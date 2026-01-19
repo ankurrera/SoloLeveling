@@ -1,4 +1,5 @@
 import { Droplet, Heart, Sparkles, Moon } from "lucide-react";
+import { useStats } from "@/hooks/useStats";
 
 interface Potion {
   id: string;
@@ -10,56 +11,64 @@ interface Potion {
 }
 
 const PotionsPanel = () => {
+  const { behaviorPatterns } = useStats();
+
+  // Potions represent behavior patterns, not consumables
   const potions: Potion[] = [
     { 
       id: "1", 
       name: "Rest", 
       icon: <Moon className="w-5 h-5" />, 
-      count: 3,
-      description: "Complete rest days",
+      count: behaviorPatterns?.rest_days || 0,
+      description: "Rest days taken",
       color: "from-blue-600 to-blue-800"
     },
     { 
       id: "2", 
-      name: "Elixir", 
+      name: "Consistency", 
       icon: <Droplet className="w-5 h-5" />, 
-      count: 5,
-      description: "Hydration streaks",
+      count: behaviorPatterns?.consistency_streaks || 0,
+      description: "Training weeks with 3+ sessions",
       color: "from-cyan-600 to-cyan-800"
     },
     { 
       id: "3", 
-      name: "Magic", 
+      name: "Deload", 
       icon: <Sparkles className="w-5 h-5" />, 
-      count: 2,
-      description: "Deload weeks",
+      count: behaviorPatterns?.deload_weeks || 0,
+      description: "Recovery weeks",
       color: "from-purple-600 to-purple-800"
     },
     { 
       id: "4", 
-      name: "Soul", 
+      name: "Balance", 
       icon: <Heart className="w-5 h-5" />, 
-      count: 7,
-      description: "Sleep quality",
+      count: behaviorPatterns?.recovery_patterns || 0,
+      description: "Balanced recovery patterns",
       color: "from-amber-600 to-amber-800"
     },
   ];
 
+  // Calculate additional metrics from behavior
+  const totalGoodPatterns = (behaviorPatterns?.rest_days || 0) + 
+                            (behaviorPatterns?.consistency_streaks || 0) + 
+                            (behaviorPatterns?.recovery_patterns || 0);
+
   const hpBoosts: Potion[] = [
     { 
       id: "5", 
-      name: "HP+", 
+      name: "Training", 
       icon: <Heart className="w-5 h-5" />, 
-      count: 4,
-      description: "Nutrition compliance",
+      count: Math.min(10, Math.floor(totalGoodPatterns / 5)),
+      description: "Balanced training adherence",
       color: "from-pink-500 to-pink-700"
     },
     { 
       id: "6", 
-      name: "MP", 
+      name: "Recovery", 
       icon: <Sparkles className="w-5 h-5" />, 
-      count: 6,
-      description: "Protein targets met",
+      count: Math.min(10, behaviorPatterns?.recovery_patterns || 0),
+      description: "Good recovery practices",
       color: "from-violet-500 to-violet-700"
     },
   ];
@@ -97,7 +106,7 @@ const PotionsPanel = () => {
       </div>
       
       {/* Label */}
-      <span className="mt-2 text-[10px] text-muted-foreground uppercase tracking-wider">
+      <span className="mt-2 text-[10px] text-muted-foreground uppercase tracking-[0.15em]">
         {potion.name}
       </span>
       
@@ -112,33 +121,39 @@ const PotionsPanel = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Potions Section */}
       <div className="system-panel p-5 hover-glow animate-fade-in-up animation-delay-400">
-        <h3 className="font-gothic text-sm text-primary mb-4 text-center">Potion</h3>
+        <h3 className="font-gothic text-sm text-primary mb-4 text-center uppercase tracking-[0.15em]">Recovery Patterns</h3>
         <div className="flex justify-center gap-4">
           {potions.slice(0, 2).map((potion) => (
             <PotionItem key={potion.id} potion={potion} />
           ))}
         </div>
-        <h3 className="font-gothic text-sm text-primary my-4 text-center">Potions</h3>
+        <h3 className="font-gothic text-sm text-primary my-4 text-center uppercase tracking-[0.15em]">Training Patterns</h3>
         <div className="flex justify-center gap-4">
           {potions.slice(2).map((potion) => (
             <PotionItem key={potion.id} potion={potion} />
           ))}
         </div>
+        <p className="text-center text-xs text-muted-foreground mt-4 italic tracking-[0.1em]">
+          Earned through consistent training habits
+        </p>
       </div>
 
       {/* HP Boosts Section */}
       <div className="system-panel p-5 hover-glow animate-fade-in-up animation-delay-400">
-        <h3 className="font-gothic text-sm text-primary mb-4 text-center">Potions</h3>
+        <h3 className="font-gothic text-sm text-primary mb-4 text-center uppercase tracking-[0.15em]">System Rewards</h3>
         <div className="flex justify-center gap-6">
           {hpBoosts.map((potion) => (
             <PotionItem key={potion.id} potion={potion} />
           ))}
         </div>
-        <h3 className="font-gothic text-sm text-primary mt-6 mb-4 text-center">Hp Boosts</h3>
+        <h3 className="font-gothic text-sm text-primary mt-6 mb-4 text-center uppercase tracking-[0.15em]">Balance Indicators</h3>
         <div className="flex justify-center gap-6">
-          <PotionItem potion={{ ...hpBoosts[0], name: "Resto", count: 8 }} />
-          <PotionItem potion={{ ...hpBoosts[1], name: "MP+", count: 5 }} />
+          <PotionItem potion={{ ...hpBoosts[0], name: "Habit", count: behaviorPatterns?.consistency_streaks || 0 }} />
+          <PotionItem potion={{ ...hpBoosts[1], name: "Rest", count: Math.min(10, Math.floor((behaviorPatterns?.rest_days || 0) / 3)) }} />
         </div>
+        <p className="text-center text-xs text-muted-foreground mt-4 italic tracking-[0.1em]">
+          Generated from behavior analysis
+        </p>
       </div>
     </div>
   );

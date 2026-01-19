@@ -1,38 +1,67 @@
 import { Target } from "lucide-react";
-
-interface Goal {
-  id: string;
-  name: string;
-  progress: number;
-  target: number;
-}
+import { useProfile } from "@/hooks/useProfile";
+import { useWorkoutSessions } from "@/hooks/useWorkoutSessions";
 
 const GoalPanel = () => {
-  const goals: Goal[] = [
-    { id: "1", name: "Bench 100kg", progress: 75, target: 100 },
-    { id: "2", name: "6-Month Streak", progress: 45, target: 180 },
-    { id: "3", name: "Pull-up Master", progress: 60, target: 100 },
-  ];
+  const { goals } = useProfile();
+  const { sessions } = useWorkoutSessions();
 
-  // Week view data
-  const weekDays = ["S", "W", "T", "W", "T", "F", "F"];
-  const weekProgress = [true, true, false, true, true, false, false];
+  // Calculate week progress from recent sessions
+  const now = new Date();
+  const weekAgo = new Date(now);
+  weekAgo.setDate(now.getDate() - 7);
+  
+  const recentSessions = sessions.filter(s => new Date(s.session_date) > weekAgo);
+  
+  // Create a Set of session date strings for O(1) lookup
+  const sessionDateSet = new Set(
+    recentSessions.map(s => new Date(s.session_date).toDateString())
+  );
+  
+  // Map to week days (0 = Sunday) - now O(7) instead of O(n*7)
+  const weekProgress = [0, 1, 2, 3, 4, 5, 6].map(dayOffset => {
+    const date = new Date(weekAgo);
+    date.setDate(weekAgo.getDate() + dayOffset);
+    return sessionDateSet.has(date.toDateString());
+  });
 
-  // Calendar data for goal tracking
-  const calendarWeeks = [
-    [null, null, null, null, 4, 5, null],
-    [1, 12, 3, 11, 15, 10, null],
-    [11, 12, 13, 11, 13, 24, null],
-    [24, 29, 20, 25, 29, 30, null],
-    [37, null, null, null, null, null, null],
-  ];
+  const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
+
+  // Get last 35 days for calendar mini-view
+  const thirtyFiveDaysAgo = new Date(now);
+  thirtyFiveDaysAgo.setDate(now.getDate() - 35);
+  const oldSessions = sessions.filter(s => new Date(s.session_date) > thirtyFiveDaysAgo);
+  
+  // Create a Set for O(1) lookup
+  const oldSessionDateSet = new Set(
+    oldSessions.map(s => new Date(s.session_date).toDateString())
+  );
+  
+  // Create 5 weeks of calendar data
+  const calendarWeeks: (number | null)[][] = [];
+  for (let week = 0; week < 5; week++) {
+    const weekData: (number | null)[] = [];
+    for (let day = 0; day < 7; day++) {
+      const date = new Date(thirtyFiveDaysAgo);
+      date.setDate(thirtyFiveDaysAgo.getDate() + (week * 7) + day);
+      
+      if (date > now) {
+        weekData.push(null);
+      } else {
+        const dayNum = date.getDate();
+        const hasSession = oldSessionDateSet.has(date.toDateString());
+        weekData.push(hasSession ? dayNum : null);
+      }
+    }
+    calendarWeeks.push(weekData);
+  }
 
   return (
     <div className="system-panel p-5 hover-glow animate-fade-in-up animation-delay-400">
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <Target className="w-4 h-4 text-primary" />
-        <h3 className="font-gothic text-lg text-primary">Goal</h3>
+        <h3 className="font-gothic text-lg text-primary uppercase tracking-wider">System Objectives</h3>
       </div>
 
       {/* Progress Arrow */}
@@ -84,20 +113,34 @@ const GoalPanel = () => {
 
       {/* Goal Progress Bars */}
       <div className="space-y-3 pt-4 border-t border-border/30">
-        {goals.map((goal) => (
-          <div key={goal.id}>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-muted-foreground">{goal.name}</span>
-              <span className="text-xs text-primary">{Math.round((goal.progress / goal.target) * 100)}%</span>
-            </div>
-            <div className="system-progress h-2">
-              <div 
-                className="system-progress-fill h-full"
-                style={{ width: `${(goal.progress / goal.target) * 100}%` }}
-              />
-            </div>
+        {goals.length === 0 ? (
+          <div className="text-center py-4 text-muted-foreground text-xs uppercase tracking-[0.15em]">
+            No objectives registered
           </div>
-        ))}
+        ) : (
+          goals.slice(0, 3).map((goal) => {
+            const progress = goal.current_value || 0;
+            const target = goal.target_value || 100;
+            const percentage = Math.min(100, (progress / target) * 100);
+            
+            return (
+              <div key={goal.id}>
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-xs text-muted-foreground truncate max-w-[180px] uppercase tracking-[0.1em]">
+                    OBJECTIVE: {goal.name}
+                  </span>
+                  <span className="text-xs text-primary font-bold">{Math.round(percentage)}%</span>
+                </div>
+                <div className="system-progress h-2">
+                  <div 
+                    className="system-progress-fill h-full"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

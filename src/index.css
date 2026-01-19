@@ -6,8 +6,8 @@
 
 @layer base {
   :root {
-    /* Dark gothic theme - no light mode needed */
-    --background: 240 10% 4%;
+    /* Dark gothic theme - no light mode needed - Solo Leveling exact colors */
+    --background: 240 14% 5%;
     --foreground: 270 20% 95%;
 
     --card: 240 10% 6%;
@@ -54,7 +54,7 @@
   }
 
   .dark {
-    --background: 240 10% 4%;
+    --background: 240 14% 5%;
     --foreground: 270 20% 95%;
     --card: 240 10% 6%;
     --card-foreground: 270 20% 95%;
@@ -243,7 +243,7 @@
 
   /* Stat label styling */
   .stat-label {
-    @apply text-sm uppercase tracking-wider;
+    @apply text-sm uppercase tracking-[0.15em];
     color: hsl(var(--system-text-dim));
   }
 
