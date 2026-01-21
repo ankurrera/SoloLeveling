@@ -32,6 +32,8 @@ const Profile = () => {
   const [displayName, setDisplayName] = useState('');
   const [playerClass, setPlayerClass] = useState('warrior');
   const [bio, setBio] = useState('');
+  const [bodyweight, setBodyweight] = useState('');
+
 
   // Preferences state
   const [workoutFrequency, setWorkoutFrequency] = useState(4);
@@ -56,6 +58,7 @@ const Profile = () => {
       setDisplayName(profile.display_name || '');
       setPlayerClass(profile.player_class || 'warrior');
       setBio(profile.bio || '');
+      setBodyweight(profile.bodyweight_kg ? profile.bodyweight_kg.toString() : '');
     }
   }, [profile]);
 
@@ -73,7 +76,8 @@ const Profile = () => {
     updateProfile({
       display_name: displayName,
       player_class: playerClass,
-      bio: bio
+      bio: bio,
+      bodyweight_kg: bodyweight ? parseFloat(bodyweight) : null
     });
   };
 
@@ -229,6 +233,23 @@ const Profile = () => {
                   className="bg-input border-border focus:border-primary min-h-24"
                   placeholder="Tell us about your training journey..."
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="stat-label">Bodyweight (kg)</Label>
+                <Input
+                  type="number"
+                  value={bodyweight}
+                  onChange={(e) => setBodyweight(e.target.value)}
+                  className="bg-input border-border focus:border-primary"
+                  placeholder="Enter your bodyweight in kg"
+                  min="30"
+                  max="250"
+                  step="0.1"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Used to calculate relative training load. Updates affect future sessions only.
+                </p>
               </div>
 
               <div className="flex justify-end">

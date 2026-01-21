@@ -1,39 +1,17 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
-import InlineWorkoutLogger from "./InlineWorkoutLogger";
+import { Sword } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const WorkoutSessionForm = () => {
-  const [isLogging, setIsLogging] = useState(false);
-
-  if (isLogging) {
-    return (
-      <div className="w-full space-y-4">
-        <div className="flex justify-end">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsLogging(false)}
-          >
-            <X className="w-4 h-4 mr-2" />
-            Close
-          </Button>
-        </div>
-        <InlineWorkoutLogger
-          sessionId={null}
-          onComplete={() => setIsLogging(false)}
-        />
-      </div>
-    );
-  }
+  const navigate = useNavigate();
 
   return (
     <Button
       className="w-full sm:w-auto uppercase tracking-[0.1em]"
-      onClick={() => setIsLogging(true)}
+      onClick={() => navigate("/routines")}
     >
-      <Plus className="w-4 h-4 mr-2" />
-      Log Workout
+      <Sword className="w-4 h-4 mr-2" />
+      Quest Preparations
     </Button>
   );
 };

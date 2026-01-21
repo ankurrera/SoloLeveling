@@ -1,5 +1,3 @@
-import { Settings, Menu } from "lucide-react";
-
 const SystemHeader = () => {
   return (
     <header className="relative py-8 px-6">
@@ -42,18 +40,9 @@ const SystemHeader = () => {
         </svg>
       </div>
 
-      {/* Navigation Icons */}
+      {/* Navigation Label */}
       <div className="absolute top-6 left-6 flex items-center gap-2">
         <span className="text-primary text-sm font-gothic tracking-wider">⚔ LVES</span>
-      </div>
-      
-      <div className="absolute top-6 right-6 flex items-center gap-4">
-        <button className="text-muted-foreground hover:text-primary transition-colors">
-          <Settings className="w-5 h-5" />
-        </button>
-        <button className="text-muted-foreground hover:text-primary transition-colors">
-          <Menu className="w-5 h-5" />
-        </button>
       </div>
 
       {/* Main Title */}

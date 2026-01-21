@@ -2,10 +2,14 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Loader2, Clock } from "lucide-react";
 import { useWorkoutSessions, SessionWithDetails } from "@/hooks/useWorkoutSessions";
+import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { calculateSessionXP, getSystemMessage } from "@/lib/xpCalculation";
+import { formatElapsedTime } from "@/lib/timeUtils";
+import type { ExerciseSet as XPExerciseSet } from "@/lib/xpCalculation";
 
 interface InlineWorkoutLoggerProps {
   sessionId?: string | null;
@@ -14,15 +18,18 @@ interface InlineWorkoutLoggerProps {
 
 const InlineWorkoutLogger = ({ sessionId, onComplete }: InlineWorkoutLoggerProps) => {
   const { user } = useAuth();
+  const { profile } = useProfile();
   const {
     createSession,
     addExercise,
     addSet,
     updateExercise,
     updateSet,
+    updateSession,
     deleteExercise,
     deleteSet,
-    getSessionDetails
+    getSessionDetails,
+    sessions
   } = useWorkoutSessions();
 
   const [currentSession, setCurrentSession] = useState<SessionWithDetails | null>(null);
@@ -30,6 +37,7 @@ const InlineWorkoutLogger = ({ sessionId, onComplete }: InlineWorkoutLoggerProps
   const [isSaving, setIsSaving] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [isAddingExercise, setIsAddingExercise] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const sessionCreationInitiated = useRef(false);
 
   // Load existing session if editing
@@ -59,9 +67,11 @@ const InlineWorkoutLogger = ({ sessionId, onComplete }: InlineWorkoutLoggerProps
       sessionCreationInitiated.current = true;
       createSession(
         {
-          session_date: new Date().toISOString(),
+          session_date: new Date().toISOString(), // Client date for UI display
           duration_minutes: null,
-          notes: null
+          notes: null,
+          status: 'active' as const, // Start as active
+          // start_time will be set by database default to server time (now())
         },
         {
           onSuccess: async (session) => {
@@ -80,6 +90,25 @@ const InlineWorkoutLogger = ({ sessionId, onComplete }: InlineWorkoutLoggerProps
     // unnecessary re-runs and potential infinite loops.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, currentSession, user]);
+
+  // Timer effect - calculate elapsed time from session start_time
+  useEffect(() => {
+    if (!currentSession?.start_time) return;
+
+    const startTime = new Date(currentSession.start_time).getTime();
+    
+    const updateElapsed = () => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      setElapsedSeconds(elapsed);
+    };
+
+    // Update immediately
+    updateElapsed();
+
+    // Then update every second
+    const interval = setInterval(updateElapsed, 1000);
+    return () => clearInterval(interval);
+  }, [currentSession?.start_time]);
 
   const handleAddExercise = useCallback(async () => {
     if (!newExerciseName.trim() || !currentSession) {
@@ -443,21 +472,111 @@ const InlineWorkoutLogger = ({ sessionId, onComplete }: InlineWorkoutLoggerProps
           </Button>
         )}
 
+        {/* Live Elapsed Time Display */}
+        <div className="border rounded-lg p-4 bg-muted/30">
+          <div className="flex items-center gap-3">
+            <Clock className="w-5 h-5 text-muted-foreground" />
+            <div className="flex-1">
+              <label className="text-sm font-medium">Workout in Progress</label>
+              <div className="text-2xl font-bold text-primary mt-1">
+                {formatElapsedTime(elapsedSeconds)}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Live elapsed time from start
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Complete Button */}
         {currentSession.exercises.length > 0 && (
           <div className="pt-4 border-t">
             <Button
-              onClick={() => {
-                const totalExercises = currentSession.exercises.length;
-                const totalSets = currentSession.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
-                const xpEarned = (totalExercises * 10) + (totalSets * 5);
-                toast.success(`Workout completed! +${xpEarned} XP earned from ${totalExercises} exercises and ${totalSets} sets!`);
-                if (onComplete) onComplete();
+              onClick={async () => {
+                // Calculate duration from elapsed time
+                const durationMinutes = Math.floor(elapsedSeconds / 60);
+
+                // Collect all sets from all exercises
+                const allSets: XPExerciseSet[] = currentSession.exercises.flatMap(ex => 
+                  ex.sets.map(set => ({
+                    reps: set.reps,
+                    weight_kg: set.weight_kg
+                  }))
+                );
+
+                // Calculate total volume
+                const totalVolume = allSets.reduce((sum, set) => {
+                  return sum + ((set.weight_kg || 0) * set.reps);
+                }, 0);
+
+                // Validation: must have at least one set with volume
+                if (allSets.length === 0 || totalVolume <= 0) {
+                  toast.error('Session must have at least one set with weight and reps to complete');
+                  return;
+                }
+
+                // Calculate sessions this week for consistency bonus
+                const now = new Date();
+                const startOfWeek = new Date(now);
+                startOfWeek.setDate(now.getDate() - now.getDay());
+                startOfWeek.setHours(0, 0, 0, 0);
+                
+                const sessionsThisWeek = sessions.filter(s => {
+                  const sessionDate = new Date(s.session_date);
+                  return sessionDate >= startOfWeek && s.is_completed;
+                }).length;
+
+                // Calculate XP - duration will be from real elapsed time
+                const xp = calculateSessionXP(
+                  {
+                    sets: allSets,
+                    duration_minutes: durationMinutes,
+                    is_edited: currentSession.is_edited || false
+                  },
+                  {
+                    fatigue_level: profile?.fatigue_level || 0
+                  },
+                  {
+                    sessions_this_week: sessionsThisWeek
+                  },
+                  {
+                    bodyweight_kg: profile?.bodyweight_kg
+                  }
+                );
+
+                // Update session with completion and XP
+                // Set status to 'completed' - database trigger will set end_time to server now()
+                // and calculate duration_minutes automatically
+                updateSession(
+                  {
+                    id: currentSession.id,
+                    status: 'completed' as const, // Trigger will set end_time=now() and calculate duration
+                    total_xp_earned: xp,
+                    is_completed: true, // Legacy field for backward compatibility
+                    completion_time: new Date().toISOString()
+                  },
+                  {
+                    onSuccess: () => {
+                      const message = getSystemMessage(xp);
+                      toast.success('SYSTEM:', {
+                        description: message,
+                        duration: 5000,
+                      });
+                      toast.info(`+${xp} XP earned`, {
+                        duration: 3000,
+                      });
+                      if (onComplete) onComplete();
+                    }
+                  }
+                );
               }}
               className="w-full"
             >
               Complete Workout
             </Button>
+            <p className="text-center text-sm text-muted-foreground mt-2">
+              Duration: {Math.floor(elapsedSeconds / 60)} minutes
+            </p>
           </div>
         )}
       </CardContent>

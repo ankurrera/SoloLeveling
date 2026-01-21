@@ -150,6 +150,142 @@
     box-shadow: 0 0 10px hsl(var(--accent) / 0.5);
   }
 
+  /* RPG-Style Progress Bars */
+  .rpg-progress-bar {
+    @apply relative h-3 rounded-sm overflow-hidden;
+    background: hsl(var(--system-bar-bg));
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .rpg-progress-fill {
+    @apply h-full rounded-sm transition-all duration-1000 ease-out;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(280 100% 65%) 50%,
+      hsl(var(--accent)) 100%
+    );
+    box-shadow: 
+      0 0 15px hsl(var(--accent) / 0.7),
+      0 0 5px hsl(var(--primary) / 0.5),
+      inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    position: relative;
+  }
+
+  .rpg-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    border-radius: inherit;
+  }
+
+  /* Segmented XP Bar */
+  .segmented-xp-bar {
+    @apply relative h-5 rounded-sm overflow-hidden;
+    background: linear-gradient(
+      to right,
+      hsl(var(--system-bar-bg)) 0%,
+      hsl(240 20% 10%) 100%
+    );
+    box-shadow: 
+      inset 0 2px 6px rgba(0, 0, 0, 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .segmented-xp-fill {
+    @apply h-full relative;
+    transition: width 1500ms ease-out;
+    background: linear-gradient(
+      90deg,
+      hsl(270 80% 50%) 0%,
+      hsl(280 90% 60%) 30%,
+      hsl(290 100% 65%) 60%,
+      hsl(300 100% 70%) 100%
+    );
+    box-shadow: 
+      0 0 20px hsl(var(--accent) / 0.8),
+      0 0 10px hsl(var(--primary) / 0.6),
+      inset 0 2px 2px rgba(255, 255, 255, 0.4);
+    animation: xp-pulse 2s ease-in-out infinite;
+  }
+
+  .segmented-xp-fill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 8%,
+      rgba(0, 0, 0, 0.2) 8%,
+      rgba(0, 0, 0, 0.2) 10%
+    );
+  }
+
+  .segmented-xp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+  }
+
+  /* Player Header Text */
+  .player-header-text {
+    color: hsl(270, 80%, 65%); /* Fallback for browsers without background-clip support */
+    background: linear-gradient(
+      135deg,
+      hsl(270 80% 60%) 0%,
+      hsl(280 90% 65%) 30%,
+      hsl(220 100% 70%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.6)) 
+            drop-shadow(0 0 10px hsl(var(--accent) / 0.4));
+    animation: header-glow 3s ease-in-out infinite;
+  }
+
+  /* Rank Text */
+  .rank-text {
+    color: hsl(45 100% 60%);
+    text-shadow: 0 0 10px hsl(45 100% 50% / 0.5);
+  }
+
+  .rank-stars {
+    text-shadow: 0 0 8px hsl(45 100% 50% / 0.6);
+  }
+
+  /* Level Badge */
+  .level-badge {
+    animation: level-pulse 2s ease-in-out infinite;
+  }
+
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .player-header-text,
+    .level-badge,
+    .segmented-xp-fill,
+    .rpg-progress-fill {
+      animation: none;
+    }
+  }
+
   /* Glowing border effect */
   .glow-border {
     box-shadow: 
@@ -290,6 +426,41 @@
     }
     50% {
       transform: translateY(-5px);
+    }
+  }
+
+  @keyframes xp-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 0 20px hsl(var(--accent) / 0.8),
+        0 0 10px hsl(var(--primary) / 0.6);
+    }
+    50% {
+      box-shadow: 
+        0 0 30px hsl(var(--accent) / 1),
+        0 0 15px hsl(var(--primary) / 0.8);
+    }
+  }
+
+  @keyframes header-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.6)) 
+              drop-shadow(0 0 10px hsl(var(--accent) / 0.4));
+    }
+    50% {
+      filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.8)) 
+              drop-shadow(0 0 15px hsl(var(--accent) / 0.6));
+    }
+  }
+
+  @keyframes level-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.8);
     }
   }
 

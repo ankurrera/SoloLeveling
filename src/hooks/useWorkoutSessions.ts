@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -10,8 +11,15 @@ export interface WorkoutSession {
   duration_minutes: number | null;
   notes: string | null;
   total_xp_earned: number | null;
+  is_completed: boolean | null;
+  is_edited: boolean | null;
+  completion_time: string | null;
   created_at: string;
   updated_at: string;
+  routine_id: string | null;
+  start_time: string; // NOT NULL - server timestamp when workout starts
+  end_time: string | null;
+  status: 'active' | 'paused' | 'completed'; // Session status
 }
 
 export interface SessionExercise {
@@ -64,7 +72,7 @@ export const useWorkoutSessions = () => {
   });
 
   // Fetch a single session with all exercises and sets
-  const getSessionDetails = async (sessionId: string): Promise<SessionWithDetails | null> => {
+  const getSessionDetails = useCallback(async (sessionId: string): Promise<SessionWithDetails | null> => {
     if (!user) return null;
 
     // Fetch session
@@ -109,7 +117,7 @@ export const useWorkoutSessions = () => {
       ...session,
       exercises: exercisesWithSets
     } as SessionWithDetails;
-  };
+  }, [user]);
 
   // Create a new workout session
   const createSessionMutation = useMutation({
