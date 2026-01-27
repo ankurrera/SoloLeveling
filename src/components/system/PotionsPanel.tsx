@@ -21,7 +21,7 @@ const PotionsPanel = () => {
       icon: <Moon className="w-5 h-5" />, 
       count: behaviorPatterns?.rest_days || 0,
       description: "Rest days taken",
-      color: "from-blue-600 to-blue-800"
+      color: "from-muted to-card"
     },
     { 
       id: "2", 
@@ -29,7 +29,7 @@ const PotionsPanel = () => {
       icon: <Droplet className="w-5 h-5" />, 
       count: behaviorPatterns?.consistency_streaks || 0,
       description: "Training weeks with 3+ sessions",
-      color: "from-cyan-600 to-cyan-800"
+      color: "from-muted to-card"
     },
     { 
       id: "3", 
@@ -37,7 +37,7 @@ const PotionsPanel = () => {
       icon: <Sparkles className="w-5 h-5" />, 
       count: behaviorPatterns?.deload_weeks || 0,
       description: "Recovery weeks",
-      color: "from-purple-600 to-purple-800"
+      color: "from-muted to-card"
     },
     { 
       id: "4", 
@@ -45,7 +45,7 @@ const PotionsPanel = () => {
       icon: <Heart className="w-5 h-5" />, 
       count: behaviorPatterns?.recovery_patterns || 0,
       description: "Balanced recovery patterns",
-      color: "from-amber-600 to-amber-800"
+      color: "from-muted to-card"
     },
   ];
 
@@ -61,7 +61,7 @@ const PotionsPanel = () => {
       icon: <Heart className="w-5 h-5" />, 
       count: Math.min(10, Math.floor(totalGoodPatterns / 5)),
       description: "Balanced training adherence",
-      color: "from-pink-500 to-pink-700"
+      color: "from-muted to-card"
     },
     { 
       id: "6", 
@@ -69,7 +69,7 @@ const PotionsPanel = () => {
       icon: <Sparkles className="w-5 h-5" />, 
       count: Math.min(10, behaviorPatterns?.recovery_patterns || 0),
       description: "Good recovery practices",
-      color: "from-violet-500 to-violet-700"
+      color: "from-muted to-card"
     },
   ];
 
@@ -78,24 +78,19 @@ const PotionsPanel = () => {
       {/* Potion Bottle */}
       <div className={`
         relative w-12 h-16 rounded-b-lg rounded-t-sm 
-        bg-gradient-to-b ${potion.color} 
-        border border-white/10
-        shadow-lg
+        bg-muted 
+        border border-border
         transition-transform duration-300
         group-hover:scale-105
-        group-hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]
       `}>
         {/* Bottle neck */}
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-3 bg-gradient-to-b from-gray-600 to-gray-700 rounded-t-sm border border-white/10" />
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-3 bg-card rounded-t-sm border border-border" />
         
         {/* Cork */}
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-3 h-2 bg-gradient-to-b from-amber-800 to-amber-900 rounded-t-sm" />
-        
-        {/* Liquid shine */}
-        <div className="absolute inset-1 bg-gradient-to-br from-white/20 to-transparent rounded-b-lg" />
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-3 h-2 bg-muted-foreground rounded-t-sm" />
         
         {/* Icon */}
-        <div className="absolute inset-0 flex items-center justify-center text-white/70">
+        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
           {potion.icon}
         </div>
         

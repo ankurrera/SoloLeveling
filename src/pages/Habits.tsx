@@ -7,7 +7,7 @@ import QuestCard from "@/components/habits/QuestCard";
 import CreateHabitDialog from "@/components/habits/CreateHabitDialog";
 import CornerDecoration from "@/components/system/CornerDecoration";
 import { Button } from "@/components/ui/button";
-import { Home, Settings, Calendar, Target, Trophy, Swords } from "lucide-react";
+import { Home, Settings, Calendar, Target, Trophy, Swords, Sparkles } from "lucide-react";
 
 const Habits = () => {
   const { user, loading } = useAuth();
@@ -63,7 +63,18 @@ const Habits = () => {
                   Track your daily habits and earn XP
                 </p>
               </div>
-              <CreateHabitDialog />
+              <div className="flex items-center gap-3">
+                <Link to="/skills">
+                  <Button
+                    variant="outline"
+                    className="border-border hover:bg-muted text-foreground"
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Skills
+                  </Button>
+                </Link>
+                <CreateHabitDialog />
+              </div>
             </div>
           </div>
 

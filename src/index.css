@@ -6,73 +6,97 @@
 
 @layer base {
   :root {
-    /* Dark gothic theme - no light mode needed - Solo Leveling exact colors */
-    --background: 240 14% 5%;
-    --foreground: 270 20% 95%;
+    /* Notion-style Light Mode - Neutral Grayscale */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 22%;
 
-    --card: 240 10% 6%;
-    --card-foreground: 270 20% 95%;
+    --card: 30 17% 97%;
+    --card-foreground: 0 0% 22%;
 
-    --popover: 240 10% 6%;
-    --popover-foreground: 270 20% 95%;
+    --popover: 30 17% 97%;
+    --popover-foreground: 0 0% 22%;
 
-    --primary: 270 70% 55%;
+    --primary: 0 0% 22%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 280 60% 45%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 22%;
 
-    --muted: 240 10% 12%;
-    --muted-foreground: 270 10% 55%;
+    --muted: 30 17% 97%;
+    --muted-foreground: 0 0% 42%;
 
-    --accent: 290 80% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 94%;
+    --accent-foreground: 0 0% 22%;
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 30% 20%;
-    --input: 270 30% 15%;
-    --ring: 270 70% 55%;
+    --border: 0 0% 90%;
+    --input: 0 0% 94%;
+    --ring: 0 0% 86%;
 
     --radius: 0.5rem;
 
-    /* Custom System Colors */
-    --system-glow: 270 70% 55%;
-    --system-accent: 290 80% 60%;
-    --system-bar-fill: 280 100% 65%;
-    --system-bar-bg: 270 30% 15%;
-    --system-border: 270 50% 30%;
-    --system-text-dim: 270 10% 45%;
+    /* Custom System Colors - Neutral Grayscale */
+    --system-glow: 0 0% 42%;
+    --system-accent: 0 0% 42%;
+    --system-bar-fill: 0 0% 42%;
+    --system-bar-bg: 0 0% 94%;
+    --system-border: 0 0% 86%;
+    --system-text-dim: 0 0% 61%;
     --system-success: 150 70% 45%;
     --system-warning: 45 90% 55%;
 
-    /* Panel backgrounds */
-    --panel-bg: 240 15% 8%;
-    --panel-border: 270 40% 25%;
-    --panel-glow: 270 70% 50%;
+    /* Panel backgrounds - Flat */
+    --panel-bg: 30 17% 97%;
+    --panel-border: 0 0% 90%;
+    --panel-glow: 0 0% 42%;
   }
 
   .dark {
-    --background: 240 14% 5%;
-    --foreground: 270 20% 95%;
-    --card: 240 10% 6%;
-    --card-foreground: 270 20% 95%;
-    --popover: 240 10% 6%;
-    --popover-foreground: 270 20% 95%;
-    --primary: 270 70% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 280 60% 45%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 240 10% 12%;
-    --muted-foreground: 270 10% 55%;
-    --accent: 290 80% 60%;
-    --accent-foreground: 0 0% 100%;
+    /* Notion-style Dark Mode - True Dark Grayscale */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 90%;
+
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 90%;
+
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 90%;
+
+    --primary: 0 0% 90%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 56%;
+
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 90%;
+
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 270 30% 20%;
-    --input: 270 30% 15%;
-    --ring: 270 70% 55%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 16%;
+    --ring: 0 0% 23%;
+
+    /* Custom System Colors - Dark Mode Neutral */
+    --system-glow: 0 0% 74%;
+    --system-accent: 0 0% 74%;
+    --system-bar-fill: 0 0% 74%;
+    --system-bar-bg: 0 0% 16%;
+    --system-border: 0 0% 23%;
+    --system-text-dim: 0 0% 56%;
+    --system-success: 150 70% 45%;
+    --system-warning: 45 90% 55%;
+
+    /* Panel backgrounds - Dark Flat */
+    --panel-bg: 0 0% 13%;
+    --panel-border: 0 0% 23%;
+    --panel-glow: 0 0% 74%;
   }
 }
 
@@ -101,40 +125,32 @@
     font-family: 'Rajdhani', sans-serif;
   }
 
-  /* System Panel Styling */
+  /* System Panel Styling - Flat, No Glows */
   .system-panel {
     @apply relative bg-panel rounded-lg border border-panel-border;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--panel-bg)) 0%,
-      hsl(240 15% 6%) 100%
-    );
-    box-shadow: 
-      0 0 20px hsl(var(--panel-glow) / 0.1),
-      inset 0 1px 0 hsl(var(--panel-border) / 0.3);
+    background: hsl(var(--panel-bg));
   }
 
-  .system-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--panel-border)) 0%,
-      transparent 50%,
-      hsl(var(--panel-border) / 0.3) 100%
-    );
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+  /* Notion-style Card Container */
+  .notion-card {
+    @apply relative rounded-lg border;
+    background: hsl(var(--background));
+    border-color: hsl(var(--border));
+    padding: 1.5rem;
   }
 
-  /* Progress Bar */
+  /* Notion-style Progress Bar - Monochrome */
+  .notion-progress-bar {
+    @apply relative h-2 rounded-sm overflow-hidden;
+    background: hsl(var(--muted));
+  }
+
+  .notion-progress-fill {
+    @apply h-full rounded-sm transition-all duration-700 ease-out;
+    background: hsl(var(--foreground));
+  }
+
+  /* Progress Bar - Neutral Grayscale */
   .system-progress {
     @apply relative h-3 rounded-full overflow-hidden;
     background: hsl(var(--system-bar-bg));
@@ -142,79 +158,30 @@
 
   .system-progress-fill {
     @apply h-full rounded-full transition-all duration-1000 ease-out;
-    background: linear-gradient(
-      90deg,
-      hsl(var(--primary)) 0%,
-      hsl(var(--accent)) 100%
-    );
-    box-shadow: 0 0 10px hsl(var(--accent) / 0.5);
+    background: hsl(var(--system-bar-fill));
   }
 
-  /* RPG-Style Progress Bars */
+  /* RPG-Style Progress Bars - Neutral Grayscale */
   .rpg-progress-bar {
     @apply relative h-3 rounded-sm overflow-hidden;
     background: hsl(var(--system-bar-bg));
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .rpg-progress-fill {
     @apply h-full rounded-sm transition-all duration-1000 ease-out;
-    background: linear-gradient(
-      90deg,
-      hsl(var(--primary)) 0%,
-      hsl(280 100% 65%) 50%,
-      hsl(var(--accent)) 100%
-    );
-    box-shadow: 
-      0 0 15px hsl(var(--accent) / 0.7),
-      0 0 5px hsl(var(--primary) / 0.5),
-      inset 0 1px 1px rgba(255, 255, 255, 0.3);
-    position: relative;
+    background: hsl(var(--system-bar-fill));
   }
 
-  .rpg-progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    border-radius: inherit;
-  }
-
-  /* Segmented XP Bar */
+  /* Segmented XP Bar - Neutral Grayscale */
   .segmented-xp-bar {
     @apply relative h-5 rounded-sm overflow-hidden;
-    background: linear-gradient(
-      to right,
-      hsl(var(--system-bar-bg)) 0%,
-      hsl(240 20% 10%) 100%
-    );
-    box-shadow: 
-      inset 0 2px 6px rgba(0, 0, 0, 0.4),
-      0 1px 0 rgba(255, 255, 255, 0.05);
+    background: hsl(var(--system-bar-bg));
   }
 
   .segmented-xp-fill {
     @apply h-full relative;
     transition: width 1500ms ease-out;
-    background: linear-gradient(
-      90deg,
-      hsl(270 80% 50%) 0%,
-      hsl(280 90% 60%) 30%,
-      hsl(290 100% 65%) 60%,
-      hsl(300 100% 70%) 100%
-    );
-    box-shadow: 
-      0 0 20px hsl(var(--accent) / 0.8),
-      0 0 10px hsl(var(--primary) / 0.6),
-      inset 0 2px 2px rgba(255, 255, 255, 0.4);
-    animation: xp-pulse 2s ease-in-out infinite;
+    background: hsl(var(--system-bar-fill));
   }
 
   .segmented-xp-fill::before {
@@ -225,55 +192,28 @@
       90deg,
       transparent 0%,
       transparent 8%,
-      rgba(0, 0, 0, 0.2) 8%,
-      rgba(0, 0, 0, 0.2) 10%
+      rgba(0, 0, 0, 0.05) 8%,
+      rgba(0, 0, 0, 0.05) 10%
     );
   }
 
-  .segmented-xp-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.5),
-      transparent
-    );
-  }
-
-  /* Player Header Text */
+  /* Player Header Text - Neutral */
   .player-header-text {
-    color: hsl(270, 80%, 65%); /* Fallback for browsers without background-clip support */
-    background: linear-gradient(
-      135deg,
-      hsl(270 80% 60%) 0%,
-      hsl(280 90% 65%) 30%,
-      hsl(220 100% 70%) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.6)) 
-            drop-shadow(0 0 10px hsl(var(--accent) / 0.4));
-    animation: header-glow 3s ease-in-out infinite;
+    color: hsl(var(--foreground));
   }
 
-  /* Rank Text */
+  /* Rank Text - Neutral */
   .rank-text {
-    color: hsl(45 100% 60%);
-    text-shadow: 0 0 10px hsl(45 100% 50% / 0.5);
+    color: hsl(var(--foreground));
   }
 
   .rank-stars {
-    text-shadow: 0 0 8px hsl(45 100% 50% / 0.6);
+    color: hsl(var(--foreground));
   }
 
-  /* Level Badge */
+  /* Level Badge - No Animation */
   .level-badge {
-    animation: level-pulse 2s ease-in-out infinite;
+    /* Animation removed for neutral theme */
   }
 
   /* Respect user motion preferences */
@@ -286,25 +226,22 @@
     }
   }
 
-  /* Glowing border effect */
+  /* Subtle border effect - No Glow */
   .glow-border {
-    box-shadow: 
-      0 0 5px hsl(var(--primary) / 0.3),
-      0 0 20px hsl(var(--primary) / 0.1),
-      inset 0 0 5px hsl(var(--primary) / 0.1);
+    border: 1px solid hsl(var(--border));
   }
 
-  /* Corner decorations */
+  /* Corner decorations - Neutral */
   .corner-decoration {
     @apply absolute w-8 h-8 pointer-events-none;
-    opacity: 0.6;
+    opacity: 0.3;
   }
 
   .corner-decoration::before,
   .corner-decoration::after {
     content: '';
     position: absolute;
-    background: hsl(var(--primary));
+    background: hsl(var(--border));
   }
 
   .corner-tl::before {
@@ -363,18 +300,18 @@
     height: 100%;
   }
 
-  /* Hover glow effect */
+  /* Hover effect - Subtle */
   .hover-glow {
     @apply transition-all duration-300;
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 25px hsl(var(--primary) / 0.4);
+    background: hsl(var(--accent));
   }
 
-  /* Text glow */
+  /* Text styling - No Glow */
   .text-glow {
-    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+    color: hsl(var(--foreground));
   }
 
   /* Stat label styling */
@@ -390,25 +327,7 @@
 }
 
 @layer utilities {
-  /* Animations */
-  @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 0 10px hsl(var(--primary) / 0.3);
-    }
-    50% {
-      box-shadow: 0 0 25px hsl(var(--primary) / 0.6);
-    }
-  }
-
-  @keyframes bar-shimmer {
-    0% {
-      background-position: -200% center;
-    }
-    100% {
-      background-position: 200% center;
-    }
-  }
-
+  /* Animations - Simplified */
   @keyframes fade-in-up {
     from {
       opacity: 0;
@@ -427,50 +346,6 @@
     50% {
       transform: translateY(-5px);
     }
-  }
-
-  @keyframes xp-pulse {
-    0%, 100% {
-      box-shadow: 
-        0 0 20px hsl(var(--accent) / 0.8),
-        0 0 10px hsl(var(--primary) / 0.6);
-    }
-    50% {
-      box-shadow: 
-        0 0 30px hsl(var(--accent) / 1),
-        0 0 15px hsl(var(--primary) / 0.8);
-    }
-  }
-
-  @keyframes header-glow {
-    0%, 100% {
-      filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.6)) 
-              drop-shadow(0 0 10px hsl(var(--accent) / 0.4));
-    }
-    50% {
-      filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.8)) 
-              drop-shadow(0 0 15px hsl(var(--accent) / 0.6));
-    }
-  }
-
-  @keyframes level-pulse {
-    0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px hsl(var(--primary) / 0.8);
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  .animate-bar-shimmer {
-    background-size: 200% 100%;
-    animation: bar-shimmer 2s linear infinite;
   }
 
   .animate-fade-in-up {

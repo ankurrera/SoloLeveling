@@ -14,6 +14,154 @@ export type Database = {
   }
   public: {
     Tables: {
+      habits: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          icon: string
+          color: string
+          win_xp: number
+          lose_xp: number
+          duration_days: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          icon?: string
+          color?: string
+          win_xp?: number
+          lose_xp?: number
+          duration_days?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          icon?: string
+          color?: string
+          win_xp?: number
+          lose_xp?: number
+          duration_days?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      habit_completions: {
+        Row: {
+          id: string
+          habit_id: string
+          user_id: string
+          completion_date: string
+          completed: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          habit_id: string
+          user_id: string
+          completion_date: string
+          completed?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          habit_id?: string
+          user_id?: string
+          completion_date?: string
+          completed?: boolean
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "habit_completions_habit_id_fkey"
+            columns: ["habit_id"]
+            referencedRelation: "habits"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      characteristics: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          icon: string
+          xp: number
+          level: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          icon?: string
+          xp?: number
+          level?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          icon?: string
+          xp?: number
+          level?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          description: string | null
+          area: string | null
+          cover_image: string | null
+          xp: number
+          level: number
+          is_active: boolean
+          related_characteristics: string[]
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          description?: string | null
+          area?: string | null
+          cover_image?: string | null
+          xp?: number
+          level?: number
+          is_active?: boolean
+          related_characteristics?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          description?: string | null
+          area?: string | null
+          cover_image?: string | null
+          xp?: number
+          level?: number
+          is_active?: boolean
+          related_characteristics?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           bio: string | null

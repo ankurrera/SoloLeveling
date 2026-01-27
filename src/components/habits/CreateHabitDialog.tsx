@@ -58,7 +58,7 @@ const CreateHabitDialog = ({ trigger, onSuccess }: CreateHabitDialogProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="hover-glow bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20">
+          <Button className="hover-glow bg-muted border border-border text-foreground hover:bg-accent">
             <Plus className="w-4 h-4 mr-2" />
             New Habit
           </Button>
@@ -66,7 +66,7 @@ const CreateHabitDialog = ({ trigger, onSuccess }: CreateHabitDialogProps) => {
       </DialogTrigger>
       <DialogContent className="system-panel max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-gothic text-xl text-primary uppercase tracking-wider">
+          <DialogTitle className="font-gothic text-xl text-foreground uppercase tracking-wider">
             Create New Habit
           </DialogTitle>
         </DialogHeader>

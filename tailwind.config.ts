@@ -91,29 +91,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "pulse-glow": {
-          "0%, 100%": {
-            boxShadow: "0 0 10px hsl(var(--primary) / 0.3)",
-          },
-          "50%": {
-            boxShadow: "0 0 25px hsl(var(--primary) / 0.6)",
-          },
-        },
-        "bar-fill": {
-          from: { width: "0%" },
-          to: { width: "var(--bar-width)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% center" },
-          "100%": { backgroundPosition: "200% center" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
-        "bar-fill": "bar-fill 1.5s ease-out forwards",
-        shimmer: "shimmer 2s linear infinite",
       },
     },
   },

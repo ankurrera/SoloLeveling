@@ -69,11 +69,11 @@ const QuestCard = ({ habit }: QuestCardProps) => {
       <div className="space-y-2 mb-3">
         <div className="flex justify-between items-center">
           <span className="text-xs text-muted-foreground uppercase tracking-wider">Win XP</span>
-          <span className="text-xs font-semibold text-purple-400">+{habit.win_xp}</span>
+          <span className="text-xs font-semibold text-foreground">+{habit.win_xp}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-xs text-muted-foreground uppercase tracking-wider">Lose XP</span>
-          <span className="text-xs font-semibold text-red-400">-{habit.lose_xp}</span>
+          <span className="text-xs font-semibold text-foreground">-{habit.lose_xp}</span>
         </div>
       </div>
 
@@ -81,17 +81,17 @@ const QuestCard = ({ habit }: QuestCardProps) => {
       <div className="flex items-center gap-2 text-xs pt-2 border-t border-border/30">
         <span className="text-muted-foreground">Status:</span>
         {isWinning && (
-          <span className="text-green-400 flex items-center gap-1">
+          <span className="text-foreground flex items-center gap-1">
             Winning ✅
           </span>
         )}
         {isLosing && (
-          <span className="text-red-400 flex items-center gap-1">
+          <span className="text-foreground flex items-center gap-1">
             Lost ❌
           </span>
         )}
         {!isWinning && !isLosing && (
-          <span className="text-yellow-400 flex items-center gap-1">
+          <span className="text-foreground flex items-center gap-1">
             In Progress ⏳
           </span>
         )}

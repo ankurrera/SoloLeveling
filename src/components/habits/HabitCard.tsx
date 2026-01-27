@@ -15,21 +15,21 @@ const HabitCard = ({ habit, onToggleCompletion }: HabitCardProps) => {
 
   const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
 
-  // Color mapping
+  // Color mapping - Neutral Grayscale
   const colorMap = {
-    purple: "bg-purple-500/20 border-purple-500/30 hover:bg-purple-500/30",
-    green: "bg-green-500/20 border-green-500/30 hover:bg-green-500/30",
-    gold: "bg-yellow-500/20 border-yellow-500/30 hover:bg-yellow-500/30",
-    orange: "bg-orange-500/20 border-orange-500/30 hover:bg-orange-500/30",
-    brown: "bg-amber-700/20 border-amber-700/30 hover:bg-amber-700/30",
+    purple: "bg-muted border-border hover:bg-accent",
+    green: "bg-muted border-border hover:bg-accent",
+    gold: "bg-muted border-border hover:bg-accent",
+    orange: "bg-muted border-border hover:bg-accent",
+    brown: "bg-muted border-border hover:bg-accent",
   };
 
   const glowColorMap = {
-    purple: "shadow-purple-500/50",
-    green: "shadow-green-500/50",
-    gold: "shadow-yellow-500/50",
-    orange: "shadow-orange-500/50",
-    brown: "shadow-amber-700/50",
+    purple: "",
+    green: "",
+    gold: "",
+    orange: "",
+    brown: "",
   };
 
   // Generate 7x5 grid for the current month (35 days)
