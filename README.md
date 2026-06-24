@@ -116,8 +116,9 @@ The app presents your real gym progress as an RPG character sheet with:
 
 **All stats are derived from logged workouts. No fake numbers. No manual editing.**
 
-📖 [System Status User Guide](SYSTEM_STATUS_USER_GUIDE.md)  
-🔧 [System Status Technical Documentation](SYSTEM_STATUS_TECHNICAL_DOCS.md)
+📖 [System Status User Guide](docs/SYSTEM_STATUS_USER_GUIDE.md)  
+🔧 [System Status Technical Documentation](docs/SYSTEM_STATUS_TECHNICAL_DOCS.md)
+
 
 ### Workout Logging
 - Log exercises with sets, reps, and weight
